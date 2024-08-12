@@ -12,8 +12,10 @@ public class App {
         Story story = new Story();
         Clean clean = new Clean();
         Continue pressTContinue = new Continue();
+        GUI gui = new GUI();
 
         //Game
+        gui.window();
         clean.clearScreen();
         TimeUnit.SECONDS.sleep(1);
         story.intro();
