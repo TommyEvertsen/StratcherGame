@@ -8,7 +8,7 @@ public class Boss extends Enemies {
         Random rand = new Random();
 
         this.setAttackPower(rand.nextInt(1, 10));
-        this.setHp(rand.nextInt(1, 10));
+        this.setHp(rand.nextInt(2, 10));
         this.setName(name);
     }
 
