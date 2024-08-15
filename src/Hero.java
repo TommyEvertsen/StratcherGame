@@ -8,6 +8,11 @@ public class Hero {
     private int age;
     private String name;
 
+    // Initialize hero
+    public Hero() {
+
+    }
+
     //Getters and setters
     public String getName() {
         return this.name;
