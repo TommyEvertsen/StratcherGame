@@ -26,6 +26,7 @@ public class App {
     JTextField userInputArea;
 
     titleScreenRenderer tsRenderer = new titleScreenRenderer();
+    introStoryRenderer introStoryRenderer = new introStoryRenderer();
     caveStoryRenderer caveStoryRenderer = new caveStoryRenderer();
 
     IntroStory introStory;
@@ -36,54 +37,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         new App();
 
-    }
-
-    public JTextArea getMainTextArea() {
-        return mainTextArea;
-    }
-
-    public JPanel getUserInputPanel() {
-        return userInputPanel;
-    }
-
-    public JPanel getChoiceButtonPanel() {
-        return choiceButtonPanel;
-    }
-
-    public JButton getOption1() {
-        return option1;
-    }
-
-    public JButton getOption2() {
-        return option2;
-    }
-
-    public JButton getOption3() {
-        return option3;
-    }
-
-    public void setMainTextArea(String text) {
-        this.mainTextArea.setText(text);
-    }
-
-    public void UserInputPanel(boolean visible) {
-        this.userInputPanel.setVisible(visible);
-    }
-
-    public void setTitleNameLabel(String text) {
-        this.titleNameLabel.setText(text);
-    }
-
-    public void setOption1Text(String text) {
-        this.option1.setText(text);
-    }
-
-    public void setOption2Text(String text) {
-        this.option2.setText(text);
-    }
-
-    public void setOption3Text(String text) {
-        this.option3.setText(text);
     }
 
     public App() {
@@ -151,7 +104,7 @@ public class App {
 
         container.add(storyTextPanel);
 
-        mainTextArea = new JTextArea("This is a story of a chuppy hero and a Stratcher. If you dont know what a Stratcher is i will tell you. But first tell me about yourself. What is your name hero?");
+        mainTextArea = new JTextArea("This is a story of a chuppy hero and a Stratcher. If you dont know what a Stratcher is i will tell you. But first tell me about yourself.");
         mainTextArea.setBounds(100, 100, 600, 250);
         mainTextArea.setBackground(Color.black);
         mainTextArea.setForeground(Color.white);
@@ -161,66 +114,45 @@ public class App {
         storyTextPanel.add(mainTextArea);
 
         choiceButtonPanel = new JPanel();
-        choiceButtonPanel.setVisible(false);
+        choiceButtonPanel.setVisible(true);
         choiceButtonPanel.setBounds(250, 350, 300, 150);
         choiceButtonPanel.setBackground(Color.black);
         choiceButtonPanel.setLayout(new GridLayout(4, 1));
 
         container.add(choiceButtonPanel);
 
-        option1 = new JButton("Test");
+        option1 = new JButton("Continue");
         option1.setBackground(Color.BLACK);
         option1.setForeground(Color.white);
         option1.setFont(normalFont);
         option1.setFocusPainted(false);
-        option1.addActionListener(caveStoryRenderer);
+        option1.addActionListener(introStoryRenderer);
 
         option2 = new JButton("Test");
         option2.setForeground(Color.white);
         option2.setFont(normalFont);
         option2.setBackground(Color.BLACK);
         option2.setFocusPainted(false);
+        option2.setVisible(false);
 
         option3 = new JButton("Test");
         option3.setBackground(Color.BLACK);
         option3.setForeground(Color.white);
         option3.setFont(normalFont);
         option3.setFocusPainted(false);
+        option3.setVisible(false);
 
         showStats = new JButton("Show stats");
         showStats.setBackground(Color.BLACK);
         showStats.setForeground(Color.white);
         showStats.setFont(normalFont);
         showStats.setFocusPainted(false);
+        showStats.setVisible(false);
 
         choiceButtonPanel.add(option1);
         choiceButtonPanel.add(option2);
         choiceButtonPanel.add(option3);
         choiceButtonPanel.add(showStats);
-
-        userInputPanel = new JPanel();
-        userInputPanel.setLayout(new GridLayout(2, 1));
-        userInputPanel.setBounds(100, 600, 600, 100);
-        userInputPanel.setBackground(Color.black);
-
-        container.add(userInputPanel);
-
-        userInputArea = new JTextField("");
-        userInputArea.setBounds(100, 600, 600, 80);
-        userInputArea.setBackground(Color.white);
-        userInputArea.setForeground(Color.black);
-        userInputArea.setFont(mainTextAreaFont);
-
-        userInputPanel.add(userInputArea);
-
-        submitButton = new JButton("Submit");
-        submitButton.setBackground(Color.BLACK);
-        submitButton.setForeground(Color.white);
-        submitButton.setFont(normalFont);
-        submitButton.setFocusPainted(false);
-        submitButton.addActionListener(new SubmitNameListener());
-
-        userInputPanel.add(submitButton);
 
     }
 
@@ -232,39 +164,77 @@ public class App {
         }
     }
 
+    public class introStoryRenderer implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            introStory = new IntroStory(App.this, mainTextAreaFont, normalFont, container, choiceButtonPanel);
+
+            introStory.introStoryText();
+        }
+
+    }
+
     public class caveStoryRenderer implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            caveStory = new CaveStory(App.this);
+            caveStory = new CaveStory(App.this, mainTextAreaFont, normalFont, container);
 
             caveStory.caveStoryText();
         }
 
     }
 
-    public class SubmitNameListener implements ActionListener {
+    public JTextField getUserInputArea() {
+        return userInputArea;
+    }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    public JTextArea getMainTextArea() {
+        return mainTextArea;
+    }
 
-            String userInput = userInputArea.getText();
+    public JPanel getUserInputPanel() {
+        return userInputPanel;
+    }
 
-            try {
-                hero.setName(userInput);
-                userInputPanel.setVisible(false);
-                introStory = new IntroStory(App.this, hero);
+    public JPanel getChoiceButtonPanel() {
+        return choiceButtonPanel;
+    }
 
-                introStory.introStoryText();
+    public JButton getOption1() {
+        return option1;
+    }
 
-                userInputArea.setText("");
-                System.out.println(hero.getName());
-            } catch (Exception ex) {
-                mainTextArea.setText("Write a name silly human.");
+    public JButton getOption2() {
+        return option2;
+    }
 
-            }
+    public JButton getOption3() {
+        return option3;
+    }
 
-        }
+    public void setMainTextArea(String text) {
+        this.mainTextArea.setText(text);
+    }
 
+    public void SetUserInputPanelVisibilty(boolean visible) {
+        this.userInputPanel.setVisible(visible);
+    }
+
+    public void setTitleNameLabel(String text) {
+        this.titleNameLabel.setText(text);
+    }
+
+    public void setOption1Text(String text) {
+        this.option1.setText(text);
+    }
+
+    public void setOption2Text(String text) {
+        this.option2.setText(text);
+    }
+
+    public void setOption3Text(String text) {
+        this.option3.setText(text);
     }
 }
