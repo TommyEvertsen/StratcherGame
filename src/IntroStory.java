@@ -63,6 +63,14 @@ public class IntroStory {
 
     public void introStoryText2() {
 
+        app.setMainTextArea("Greetings" + " " + hero.getName() + " " + "Next tell me how many winters old are you?");
+
+    }
+
+    public void introStoryText3() {
+
+        app.setMainTextArea("Well well puny human so you have survived" + " " + hero.getAge() + " " + "Winters. Now i promised you to tell you what is Stratcher is.");
+
     }
 
     public class SubmitNameListener implements ActionListener {
@@ -77,7 +85,29 @@ public class IntroStory {
         public void actionPerformed(ActionEvent e) {
             String name = userInputArea.getText();
             hero.setName(name);
-            System.out.println("Hero's name is: " + hero.getName());
+            userInputArea.setText("");
+
+            introStoryText2();
         }
+    }
+
+    public class SubmitAgeListener implements ActionListener {
+
+        JTextField userInputArea;
+
+        public SubmitAgeListener(JTextField userInputArea) {
+            this.userInputArea = userInputArea;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int age = Integer.parseInt(userInputArea.getText());
+            hero.setAge(age);
+            userInputArea.setText("");
+
+            introStoryText3();
+        }
+
     }
 }
