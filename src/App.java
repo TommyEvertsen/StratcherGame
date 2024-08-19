@@ -110,6 +110,7 @@ public class App {
         mainTextArea.setForeground(Color.white);
         mainTextArea.setFont(mainTextAreaFont);
         mainTextArea.setLineWrap(true);
+        mainTextArea.setEditable(false);
 
         storyTextPanel.add(mainTextArea);
 
@@ -179,7 +180,7 @@ public class App {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            caveStory = new CaveStory(App.this, mainTextAreaFont, normalFont, container);
+            caveStory = new CaveStory(App.this, mainTextAreaFont, normalFont, container, hero);
 
             caveStory.caveStoryText();
         }

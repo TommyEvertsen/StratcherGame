@@ -11,14 +11,18 @@ import javax.swing.JTextField;
 
 public class IntroStory {
 
-    final App app;
+    App app;
     JPanel userInputPanel, choiceButtoPanel;
     JTextField userInputArea;
-    JButton submitButton;
+    JButton submitButton, continueButton;
     Font mainTextAreaFont;
     Font normalFont;
     Container container;
     Hero hero;
+    CaveStory caveStory;
+
+    String[] storyParts;
+    int currentPartIndex;
 
     public IntroStory(App app, Font mainTextAreaFont, Font normalFont, Container container, JPanel choicButtonPanel) {
         this.app = app;
@@ -27,6 +31,15 @@ public class IntroStory {
         this.container = container;
         this.hero = new Hero();
         this.choiceButtoPanel = choicButtonPanel;
+        this.caveStory = new CaveStory(app, mainTextAreaFont, normalFont, container, hero);
+
+        storyParts = new String[]{
+            "Well well puny human so you have survived " + hero.getAge() + " Winters. Now I promised to tell you what a Stratcher is.",
+            "A Stratcher is a very dangerous creature indeed.",
+            "She is witty."
+        };
+        currentPartIndex = 0;
+
     }
 
     public void introStoryText() {
@@ -64,12 +77,27 @@ public class IntroStory {
     public void introStoryText2() {
 
         app.setMainTextArea("Greetings" + " " + hero.getName() + " " + "Next tell me how many winters old are you?");
+        submitButton.removeActionListener(submitButton.getActionListeners()[0]);
+        submitButton.addActionListener(new SubmitAgeListener(userInputArea));
 
     }
 
     public void introStoryText3() {
 
-        app.setMainTextArea("Well well puny human so you have survived" + " " + hero.getAge() + " " + "Winters. Now i promised you to tell you what is Stratcher is.");
+        userInputArea.setVisible(false);
+        submitButton.setVisible(false);
+
+        continueButton = new JButton("Continue");
+        continueButton.setBackground(Color.BLACK);
+        continueButton.setForeground(Color.white);
+        continueButton.setFont(normalFont);
+        continueButton.setFocusPainted(false);
+
+        continueButton.addActionListener(new Press());
+
+        userInputPanel.add(continueButton);
+
+        app.setMainTextArea(storyParts[currentPartIndex]);
 
     }
 
@@ -106,7 +134,25 @@ public class IntroStory {
             hero.setAge(age);
             userInputArea.setText("");
 
+            submitButton.addActionListener(new SubmitAgeListener(userInputArea));
+
             introStoryText3();
+        }
+
+    }
+
+    public class Press implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            currentPartIndex++;
+            if (currentPartIndex < storyParts.length) {
+                app.setMainTextArea(storyParts[currentPartIndex]);
+            } else {
+
+                continueButton.setVisible(false);
+                caveStory.caveStoryText();
+            }
         }
 
     }

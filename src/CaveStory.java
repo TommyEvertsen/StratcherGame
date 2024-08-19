@@ -17,18 +17,20 @@ public class CaveStory {
     Font normalFont;
 
     Container container;
+    Hero hero;
 
-    public CaveStory(App app, Font mainTextAreaFont, Font normalFont, Container container) {
+    public CaveStory(App app, Font mainTextAreaFont, Font normalFont, Container container, Hero hero) {
         this.app = app;
         this.mainTextAreaFont = mainTextAreaFont;
         this.normalFont = normalFont;
 
         this.container = container;
+        this.hero = hero;
     }
 
     public void caveStoryText() {
 
-        app.setMainTextArea("You enter a dark cave. The air is thick and damp.");
+        app.setMainTextArea("You enter a dark cave. The air is thick and damp." + " " + hero.getName());
         app.setOption1Text("text");
 
         //UserInput
