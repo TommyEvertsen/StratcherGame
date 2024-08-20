@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,8 +22,10 @@ public class IntroStory {
     Hero hero;
     CaveStory caveStory;
 
-    String[] storyParts;
     int currentPartIndex;
+    ArrayList<String> storyParts;
+
+    Boolean introStoryCompleted = false;
 
     public IntroStory(App app, Font mainTextAreaFont, Font normalFont, Container container, JPanel choicButtonPanel) {
         this.app = app;
@@ -32,28 +35,16 @@ public class IntroStory {
         this.hero = new Hero();
         this.choiceButtoPanel = choicButtonPanel;
         this.caveStory = new CaveStory(app, mainTextAreaFont, normalFont, container, hero);
-
-        storyParts = new String[]{
-            "Well well puny human so you have survived " + hero.getAge() + " Winters. Now I promised to tell you what a Stratcher is.",
-            "A Stratcher is a very dangerous creature indeed.",
-            "She is witty."
-        };
-        currentPartIndex = 0;
-
     }
 
     public void introStoryText() {
-
         app.setMainTextArea("First tell me your name human!.");
-
         choiceButtoPanel.setVisible(false);
 
-        //UserInput
         userInputPanel = new JPanel();
         userInputPanel.setLayout(new GridLayout(2, 1));
         userInputPanel.setBounds(100, 600, 600, 100);
         userInputPanel.setBackground(Color.black);
-
         container.add(userInputPanel);
 
         userInputArea = new JTextField("");
@@ -61,7 +52,6 @@ public class IntroStory {
         userInputArea.setBackground(Color.white);
         userInputArea.setForeground(Color.black);
         userInputArea.setFont(mainTextAreaFont);
-
         userInputPanel.add(userInputArea);
 
         submitButton = new JButton("Submit");
@@ -70,19 +60,18 @@ public class IntroStory {
         submitButton.setFont(normalFont);
         submitButton.setFocusPainted(false);
         submitButton.addActionListener(new SubmitNameListener(userInputArea));
-
         userInputPanel.add(submitButton);
     }
 
     public void introStoryText2() {
-
-        app.setMainTextArea("Greetings" + " " + hero.getName() + " " + "Next tell me how many winters old are you?");
+        app.setMainTextArea("Greetings " + hero.getName() + ". Next, tell me how many winters old are you?");
         submitButton.removeActionListener(submitButton.getActionListeners()[0]);
         submitButton.addActionListener(new SubmitAgeListener(userInputArea));
-
     }
 
     public void introStoryText3() {
+
+        currentPartIndex = 0;
 
         userInputArea.setVisible(false);
         submitButton.setVisible(false);
@@ -94,11 +83,30 @@ public class IntroStory {
         continueButton.setFocusPainted(false);
 
         continueButton.addActionListener(new Press());
-
         userInputPanel.add(continueButton);
 
-        app.setMainTextArea(storyParts[currentPartIndex]);
+        storyParts = new ArrayList<>();
 
+        storyParts.add("Well well puny human so you have already survived " + hero.getAge() + " Winters. I bet this will be your last. Now I promised to tell you what a Stratcher is.");
+        storyParts.add("A Stratcher is a very dangerous creature indeed.");
+        storyParts.add("She is witty, she has long razor-sharp claws, she may look cute but don't be fooled.");
+        storyParts.add("Many adventurers have been fooled into thinking she is harmless");
+        storyParts.add("Some even went as far as to try petting her to great avail");
+        storyParts.add("I tell you this" + " " + hero.getName() + " " + "Whatever you do, never approach her.");
+        storyParts.add("There are three possible locations where the Stratcher might recide.");
+        storyParts.add("- 1 The cave of roses");
+        storyParts.add("- 2 The island of the dead");
+        storyParts.add("- 3 The Mountain of fire and flesh");
+        storyParts.add("You must choose you first destination wisely");
+        storyParts.add("Where would you like to explore first?");
+
+        app.setMainTextArea(storyParts.get(currentPartIndex));
+
+    }
+
+    public void whereToGo() {
+        app.setMainTextArea("Where would you like to go?");
+        choiceButtoPanel.setVisible(true);
     }
 
     public class SubmitNameListener implements ActionListener {
@@ -114,7 +122,6 @@ public class IntroStory {
             String name = userInputArea.getText();
             hero.setName(name);
             userInputArea.setText("");
-
             introStoryText2();
         }
     }
@@ -129,16 +136,11 @@ public class IntroStory {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
             int age = Integer.parseInt(userInputArea.getText());
             hero.setAge(age);
             userInputArea.setText("");
-
-            submitButton.addActionListener(new SubmitAgeListener(userInputArea));
-
             introStoryText3();
         }
-
     }
 
     public class Press implements ActionListener {
@@ -146,14 +148,12 @@ public class IntroStory {
         @Override
         public void actionPerformed(ActionEvent e) {
             currentPartIndex++;
-            if (currentPartIndex < storyParts.length) {
-                app.setMainTextArea(storyParts[currentPartIndex]);
+            if (currentPartIndex < storyParts.size()) {
+                app.setMainTextArea(storyParts.get(currentPartIndex));
             } else {
-
                 continueButton.setVisible(false);
-                caveStory.caveStoryText();
+                whereToGo();
             }
         }
-
     }
 }

@@ -19,6 +19,8 @@ public class CaveStory {
     Container container;
     Hero hero;
 
+    Boolean caveStoryCompleted = false;
+
     public CaveStory(App app, Font mainTextAreaFont, Font normalFont, Container container, Hero hero) {
         this.app = app;
         this.mainTextAreaFont = mainTextAreaFont;
